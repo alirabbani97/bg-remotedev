@@ -4,16 +4,24 @@ import PaginationControls from "./PaginationControls";
 import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 
-type TJobList = { jobItems: TJobItem[]; isLoading: boolean };
+type TJobList = {
+  resultCount: number;
+  jobItemsSliced: TJobItem[];
+  isLoading: boolean;
+};
 
-export default function Sidebar({ jobItems, isLoading }: TJobList) {
+export default function Sidebar({
+  resultCount,
+  jobItemsSliced,
+  isLoading,
+}: TJobList) {
   return (
     <div className="sidebar">
       <div className="sidebar__top">
-        <ResultsCount />
+        <ResultsCount resultCount={resultCount} />
         <SortingControls />
       </div>
-      <JobList jobItems={jobItems} isLoading={isLoading} />
+      <JobList jobItemsSliced={jobItemsSliced} isLoading={isLoading} />
       <PaginationControls />
     </div>
   );

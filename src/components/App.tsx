@@ -5,15 +5,17 @@ import Header from "./Header";
 import BookmarksButton from "./BookmarksButton";
 import Logo from "./Logo";
 import SearchForm from "./SearchForm";
-import { useSearchFetch } from "../libs/hooks";
+import { useDebounce, useJobList } from "../libs/hooks";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
 
 function App() {
   const [searchText, setSearchText] = useState("");
+  const debouncedValue = useDebounce(searchText, 250);
 
-  const [jobItems, isLoading] = useSearchFetch(searchText);
+  // FETCHING SEARCH
+  const [resultCount, jobItemsSliced, isLoading] = useJobList(debouncedValue);
 
   return (
     <>
@@ -29,7 +31,11 @@ function App() {
       </Header>
 
       <Container>
-        <Sidebar jobItems={jobItems} isLoading={isLoading} />
+        <Sidebar
+          resultCount={resultCount}
+          jobItemsSliced={jobItemsSliced}
+          isLoading={isLoading}
+        />
         <JobItemContent />
       </Container>
 
