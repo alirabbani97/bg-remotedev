@@ -15,7 +15,10 @@ function App() {
   const debouncedValue = useDebounce(searchText, 250);
 
   // FETCHING SEARCH
-  const [resultCount, jobItemsSliced, isLoading] = useJobList(debouncedValue);
+  const [jobItems, isLoading] = useJobList(debouncedValue);
+
+  const jobItemsSliced = jobItems.slice(0, 7);
+  const resultCount = jobItems.length;
 
   return (
     <>
