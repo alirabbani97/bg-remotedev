@@ -8,11 +8,20 @@ type APIresponseJobItem = {
   jobItem: TJobItemContent;
 };
 
+type APIresponseJobList = {
+  public: boolean;
+  jobItems: TJobItem[];
+};
+
 const fetchJobItemContent = async (
   id: number | null
 ): Promise<APIresponseJobItem> => {
   const response = await fetch(`${BASE_URL}/${id}`);
+  if (!response.ok) {
+    const errorData = await response.json();
 
+    throw new Error(errorData.description);
+  }
   const data = await response.json();
   console.log(data);
   return data;
@@ -28,7 +37,7 @@ export const useJobItemContent = () => {
       enabled: !!activeId,
       refetchOnWindowFocus: false,
       retry: false,
-      onError: () => {},
+      onError: (error) => console.log(error),
     }
   );
   const jobItemContent = data?.jobItem;
@@ -36,32 +45,35 @@ export const useJobItemContent = () => {
   return { jobItemContent, isLoading };
 };
 
+const fetchJobList = async (
+  text: string | null
+): Promise<APIresponseJobList> => {
+  const response = await fetch(`${BASE_URL}?search=${text}`);
+  console.log(response);
+  if (!response.ok) {
+    const errorData = await response.json();
+
+    throw new Error(errorData.description);
+  }
+  const data = await response.json();
+  console.log(data);
+  return data;
+};
+
 export const useJobList = (searchText: string) => {
-  const [jobItems, setJobItems] = useState<TJobItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, isInitialLoading } = useQuery(
+    ["job-items", searchText],
+    () => fetchJobList(searchText),
+    {
+      staleTime: 1000 * 60 * 60,
+      enabled: !!searchText,
+      refetchOnWindowFocus: false,
+      retry: false,
+      onError: (error) => console.log(error),
+    }
+  );
 
-  useEffect(() => {
-    // if (!searchText) return;
-
-    const search = async () => {
-      setIsLoading(true);
-
-      const response = await fetch(
-        `https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=${
-          !searchText ? "r" : searchText
-        }`
-      );
-
-      const data = await response.json();
-      setJobItems(data.jobItems);
-      // console.log(data.jobItems);
-
-      setIsLoading(false);
-    };
-    search();
-  }, [searchText]);
-
-  return [jobItems, isLoading] as const;
+  return { jobItems: data?.jobItems, isLoading: isInitialLoading } as const;
 };
 
 export const useDebounce = (text: string, delay: number) => {
