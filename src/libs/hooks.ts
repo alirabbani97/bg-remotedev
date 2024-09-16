@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { TJobItem, TJobItemContent } from "./types";
+import { TJobItem } from "./types";
+import { useQuery } from "@tanstack/react-query";
+import { BASE_URL } from "./constants";
 
 export const useActiveId = () => {
   const [activeId, setActiveId] = useState<number | null>(null);
@@ -22,32 +24,55 @@ export const useActiveId = () => {
   return activeId;
 };
 
+// export const useJobItemContent = () => {
+//   const [jobItemContent, setJobItemContent] = useState<TJobItemContent | null>(
+//     null
+//   );
+//   const [isLoading, setIsLoading] = useState(false);
+//   const activeId = useActiveId();
+
+//   useEffect(() => {
+//     if (!activeId) return;
+
+//     const getJobItemContent = async () => {
+//       setIsLoading(true);
+//       const response = await fetch(
+//         `https://bytegrad.com/course-assets/projects/rmtdev/api/data/${activeId}`
+//       );
+
+//       const data = await response.json();
+//       setJobItemContent(data.jobItem);
+//       // console.log(data.jobItem);
+
+//       setIsLoading(false);
+//     };
+//     getJobItemContent();
+//   }, [activeId]);
+
+//   return { activeId, isLoading, jobItemContent };
+// };
+
 export const useJobItemContent = () => {
-  const [jobItemContent, setJobItemContent] = useState<TJobItemContent | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState(false);
   const activeId = useActiveId();
-
-  useEffect(() => {
-    if (!activeId) return;
-
-    const getJobItemContent = async () => {
-      setIsLoading(true);
-      const response = await fetch(
-        `https://bytegrad.com/course-assets/projects/rmtdev/api/data/${activeId}`
-      );
+  const { data, isLoading } = useQuery(
+    ["job-item", activeId],
+    async () => {
+      const response = await fetch(`${BASE_URL}/${activeId}`);
 
       const data = await response.json();
-      setJobItemContent(data.jobItem);
+      return data;
       // console.log(data.jobItem);
+    },
+    {
+      staleTime: 1000 * 60 * 60,
+      enabled: !!activeId,
+      refetchOnWindowFocus: false,
+      retry: false,
+      onError: () => {},
+    }
+  );
 
-      setIsLoading(false);
-    };
-    getJobItemContent();
-  }, [activeId]);
-
-  return { activeId, isLoading, jobItemContent };
+  return { data, isLoading };
 };
 
 export const useJobList = (searchText: string) => {
@@ -68,10 +93,6 @@ export const useJobList = (searchText: string) => {
           !searchText ? "r" : searchText
         }`
       );
-
-      // const response = await fetch(
-      //   `https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=${searchText}`
-      // );
 
       const data = await response.json();
       setJobItems(data.jobItems);
