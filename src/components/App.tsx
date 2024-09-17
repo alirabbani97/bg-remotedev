@@ -9,6 +9,7 @@ import { useDebounce, useJobList } from "../libs/hooks";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -43,6 +44,7 @@ function App() {
       </Container>
 
       <Footer />
+      <Toaster position="top-center" />
     </>
   );
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { TJobItem, TJobItemContent } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "./constants";
+import { handleError } from "./utils";
 
 type APIresponseJobItem = {
   public: boolean;
@@ -23,7 +24,7 @@ const fetchJobItemContent = async (
     throw new Error(errorData.description);
   }
   const data = await response.json();
-  console.log(data);
+  // console.log(data);
   return data;
 };
 
@@ -37,7 +38,7 @@ export const useJobItemContent = () => {
       enabled: !!activeId,
       refetchOnWindowFocus: false,
       retry: false,
-      onError: (error) => console.log(error),
+      onError: handleError,
     }
   );
   const jobItemContent = data?.jobItem;
@@ -56,7 +57,7 @@ const fetchJobList = async (
     throw new Error(errorData.description);
   }
   const data = await response.json();
-  console.log(data);
+  // console.log(data);
   return data;
 };
 
@@ -69,7 +70,7 @@ export const useJobList = (searchText: string) => {
       enabled: !!searchText,
       refetchOnWindowFocus: false,
       retry: false,
-      onError: (error) => console.log(error),
+      onError: handleError,
     }
   );
 
