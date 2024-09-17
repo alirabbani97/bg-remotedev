@@ -8,16 +8,12 @@ type TSidebar = {
   resultCount: number;
   jobItemsSliced: TJobItem[];
   isLoading: boolean;
-  setCurrPage: React.Dispatch<React.SetStateAction<number>>;
-  currPage: number;
 };
 
 export default function Sidebar({
   resultCount,
   jobItemsSliced,
   isLoading,
-  setCurrPage,
-  currPage,
 }: TSidebar) {
   return (
     <div className="sidebar">
@@ -27,11 +23,7 @@ export default function Sidebar({
       </div>
       <JobList jobItemsSliced={jobItemsSliced} isLoading={isLoading} />
       <PaginationControls
-        setCurrPage={setCurrPage}
-        currPage={currPage}
-        resultCount={resultCount}
         jobItemsSliced={jobItemsSliced.length}
-
       />
     </div>
   );

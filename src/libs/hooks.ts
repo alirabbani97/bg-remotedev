@@ -114,8 +114,19 @@ export const useActiveId = () => {
 export const usePagination = () => {
   const [currPage, setCurrPage] = useState(1);
 
+
+  const handleChangePage = (direction: string) => {
+    if (direction === "back") {
+      setCurrPage((prev) => (prev > 1 ? prev - 1 : 0));
+    }
+    if (direction === "next") {
+      setCurrPage((prev) => prev + 1);
+    }
+  };
+
+
   const nextpage = 7 * currPage || 7;
   const prevPage = nextpage > 7 ? nextpage - 7 : 0;
 
-  return { nextpage, prevPage, setCurrPage, currPage };
+  return { nextpage, prevPage, handleChangePage, currPage };
 };
