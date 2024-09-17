@@ -1,15 +1,15 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
-import { usePagination } from "../libs/hooks";
 import { MouseEventHandler } from "react";
 
 export default function PaginationControls({
-  jobItemsSliced,
+  isNextPageLimitReached,
+  handleChangePage,
+  currPage,
 }: {
-  jobItemsSliced: number;
+  isNextPageLimitReached: number;
+  handleChangePage: (direction: string) => void;
+  currPage: number;
 }) {
-  const { handleChangePage, currPage } = usePagination();
-
-  const isNextPageLimitReached = 7 / jobItemsSliced !== 1;
   return (
     <section className="pagination">
       {currPage > 1 && (
@@ -20,7 +20,7 @@ export default function PaginationControls({
         />
       )}
 
-      {!isNextPageLimitReached && (
+      {currPage !<= isNextPageLimitReached && (
         <PaginationButton
           direction={"next"}
           currPage={currPage}
@@ -42,7 +42,10 @@ function PaginationButton({
 }) {
   return (
     <button
-      onClick={onClick}
+      onClick={(e) => {
+        onClick(e);
+        e.currentTarget.blur();
+      }}
       className={`pagination__button  pagination__button--${direction}
        `}
     >

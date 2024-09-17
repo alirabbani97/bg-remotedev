@@ -18,10 +18,9 @@ function App() {
   // FETCHING SEARCH
   const { jobItems, isLoading } = useJobList(debouncedValue);
 
-  const { nextpage, prevPage } = usePagination();
-  
-  console.log(nextpage,prevPage)
-  const jobItemsSliced = jobItems?.slice(prevPage, nextpage) || [];
+  const { sliceStart, sliceEnd, handleChangePage, currPage } = usePagination();
+
+  const jobItemsSliced = jobItems?.slice(sliceStart, sliceEnd) || [];
 
   const resultCount = jobItems?.length || 0;
 
@@ -43,6 +42,8 @@ function App() {
           resultCount={resultCount}
           jobItemsSliced={jobItemsSliced}
           isLoading={isLoading}
+          handleChangePage={handleChangePage}
+          currPage={currPage}
         />
         <JobItemContent />
       </Container>

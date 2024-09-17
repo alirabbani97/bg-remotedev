@@ -8,13 +8,21 @@ type TSidebar = {
   resultCount: number;
   jobItemsSliced: TJobItem[];
   isLoading: boolean;
+  handleChangePage: (text: string) => void;
+  currPage: number;
 };
 
 export default function Sidebar({
   resultCount,
   jobItemsSliced,
   isLoading,
+  handleChangePage,
+  currPage,
 }: TSidebar) {
+
+  const isNextPageLimitReached = resultCount / 7;
+
+  console.log(isNextPageLimitReached)
   return (
     <div className="sidebar">
       <div className="sidebar__top">
@@ -23,7 +31,9 @@ export default function Sidebar({
       </div>
       <JobList jobItemsSliced={jobItemsSliced} isLoading={isLoading} />
       <PaginationControls
-        jobItemsSliced={jobItemsSliced.length}
+        currPage={currPage}
+        isNextPageLimitReached={isNextPageLimitReached}
+        handleChangePage={handleChangePage}
       />
     </div>
   );

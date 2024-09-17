@@ -51,14 +51,14 @@ const fetchJobList = async (
   text: string | null
 ): Promise<APIresponseJobList> => {
   const response = await fetch(`${BASE_URL}?search=${text}`);
-  console.log(response);
+  // console.log(response);
   if (!response.ok) {
     const errorData = await response.json();
 
     throw new Error(errorData.description);
   }
   const data = await response.json();
-  // console.log(data);
+  console.log(data);
   return data;
 };
 
@@ -114,7 +114,6 @@ export const useActiveId = () => {
 export const usePagination = () => {
   const [currPage, setCurrPage] = useState(1);
 
-
   const handleChangePage = (direction: string) => {
     if (direction === "back") {
       setCurrPage((prev) => (prev > 1 ? prev - 1 : 0));
@@ -124,9 +123,8 @@ export const usePagination = () => {
     }
   };
 
+  const sliceEnd = 7 * currPage || 7;
+  const sliceStart = currPage * 7 - 7 || 0;
 
-  const nextpage = 7 * currPage || 7;
-  const prevPage = nextpage > 7 ? nextpage - 7 : 0;
-
-  return { nextpage, prevPage, handleChangePage, currPage };
+  return { sliceStart, sliceEnd, handleChangePage, currPage };
 };
