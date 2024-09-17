@@ -5,7 +5,7 @@ import Header from "./Header";
 import BookmarksButton from "./BookmarksButton";
 import Logo from "./Logo";
 import SearchForm from "./SearchForm";
-import { useDebounce, useJobList } from "../libs/hooks";
+import { useDebounce, useJobList, usePagination } from "../libs/hooks";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
@@ -13,12 +13,15 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   const [searchText, setSearchText] = useState("");
-  const debouncedValue = useDebounce(searchText, 250);
 
+  const debouncedValue = useDebounce(searchText, 250);
   // FETCHING SEARCH
   const { jobItems, isLoading } = useJobList(debouncedValue);
 
-  const jobItemsSliced = jobItems?.slice(0, 7) || [];
+  const { nextpage, prevPage, setCurrPage, currPage } = usePagination();
+
+  const jobItemsSliced = jobItems?.slice(prevPage, nextpage) || [];
+
   const resultCount = jobItems?.length || 0;
 
   return (
@@ -39,6 +42,8 @@ function App() {
           resultCount={resultCount}
           jobItemsSliced={jobItemsSliced}
           isLoading={isLoading}
+          setCurrPage={setCurrPage}
+          currPage={currPage}
         />
         <JobItemContent />
       </Container>

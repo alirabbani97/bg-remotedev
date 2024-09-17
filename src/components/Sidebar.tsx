@@ -4,17 +4,21 @@ import PaginationControls from "./PaginationControls";
 import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 
-type TJobList = {
+type TSidebar = {
   resultCount: number;
   jobItemsSliced: TJobItem[];
   isLoading: boolean;
+  setCurrPage: React.Dispatch<React.SetStateAction<number>>;
+  currPage: number;
 };
 
 export default function Sidebar({
   resultCount,
   jobItemsSliced,
   isLoading,
-}: TJobList) {
+  setCurrPage,
+  currPage,
+}: TSidebar) {
   return (
     <div className="sidebar">
       <div className="sidebar__top">
@@ -22,7 +26,13 @@ export default function Sidebar({
         <SortingControls />
       </div>
       <JobList jobItemsSliced={jobItemsSliced} isLoading={isLoading} />
-      <PaginationControls />
+      <PaginationControls
+        setCurrPage={setCurrPage}
+        currPage={currPage}
+        resultCount={resultCount}
+        jobItemsSliced={jobItemsSliced.length}
+
+      />
     </div>
   );
 }

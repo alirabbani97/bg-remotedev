@@ -11,6 +11,7 @@ type APIresponseJobItem = {
 
 type APIresponseJobList = {
   public: boolean;
+  sorted: boolean;
   jobItems: TJobItem[];
 };
 
@@ -108,4 +109,13 @@ export const useActiveId = () => {
   }, []);
 
   return activeId;
+};
+
+export const usePagination = () => {
+  const [currPage, setCurrPage] = useState(1);
+
+  const nextpage = 7 * currPage || 7;
+  const prevPage = nextpage > 7 ? nextpage - 7 : 0;
+
+  return { nextpage, prevPage, setCurrPage, currPage };
 };
