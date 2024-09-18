@@ -20,7 +20,7 @@ export default function PaginationControls({
         />
       )}
 
-      {currPage !<= isNextPageLimitReached && (
+      {currPage < isNextPageLimitReached && (
         <PaginationButton
           direction={"next"}
           currPage={currPage}

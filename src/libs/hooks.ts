@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { TJobItem, TJobItemContent } from "./types";
 import { useQuery } from "@tanstack/react-query";
-import { BASE_URL } from "./constants";
+import { BASE_API_URL, RESULTS_PER_PAGE } from "./constants";
 import { handleError } from "./utils";
 
 type APIresponseJobItem = {
@@ -18,7 +18,7 @@ type APIresponseJobList = {
 const fetchJobItemContent = async (
   id: number | null
 ): Promise<APIresponseJobItem> => {
-  const response = await fetch(`${BASE_URL}/${id}`);
+  const response = await fetch(`${BASE_API_URL}/${id}`);
   if (!response.ok) {
     const errorData = await response.json();
 
@@ -50,7 +50,7 @@ export const useJobItemContent = () => {
 const fetchJobList = async (
   text: string | null
 ): Promise<APIresponseJobList> => {
-  const response = await fetch(`${BASE_URL}?search=${text}`);
+  const response = await fetch(`${BASE_API_URL}?search=${text}`);
   // console.log(response);
   if (!response.ok) {
     const errorData = await response.json();
@@ -123,8 +123,8 @@ export const usePagination = () => {
     }
   };
 
-  const sliceEnd = 7 * currPage || 7;
-  const sliceStart = currPage * 7 - 7 || 0;
+  const sliceEnd = RESULTS_PER_PAGE * currPage || RESULTS_PER_PAGE;
+  const sliceStart = currPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE || 0;
 
   return { sliceStart, sliceEnd, handleChangePage, currPage };
 };
