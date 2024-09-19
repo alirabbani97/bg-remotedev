@@ -10,9 +10,11 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
 import { Toaster } from "react-hot-toast";
+import { TJobItem } from "../libs/types";
 
 function App() {
   const [searchText, setSearchText] = useState("");
+  const [sortBy, setSortBy] = useState("relevant");
 
   const debouncedValue = useDebounce(searchText, 250);
   // FETCHING SEARCH
@@ -21,6 +23,17 @@ function App() {
   const { sliceStart, sliceEnd, handleChangePage, currPage } = usePagination();
 
   const jobItemsSliced = jobItems?.slice(sliceStart, sliceEnd) || [];
+
+  const jobsSorted = () => {
+    if (sortBy === "relevant") {
+      return jobItems?.toSorted((a,b)=> b.relevanceScore - a.relevanceScore)
+   
+    }
+    if (sortBy === "newest") {
+      return  jobItems?.toSorted((a,b)=> a.daysAgo - b.daysAgo)
+
+    }
+  };
 
   const resultCount = jobItems?.length || 0;
 
@@ -44,6 +57,8 @@ function App() {
           isLoading={isLoading}
           handleChangePage={handleChangePage}
           currPage={currPage}
+          setSortBy={setSortBy}
+          sortBy={sortBy}
         />
         <JobItemContent />
       </Container>

@@ -10,6 +10,8 @@ type TSidebar = {
   isLoading: boolean;
   handleChangePage: (text: string) => void;
   currPage: number;
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  sortBy: string;
 };
 
 export default function Sidebar({
@@ -18,16 +20,17 @@ export default function Sidebar({
   isLoading,
   handleChangePage,
   currPage,
+  setSortBy,
+  sortBy,
 }: TSidebar) {
-
   const isNextPageLimitReached = resultCount / 7;
 
-  console.log(isNextPageLimitReached)
+  console.log(isNextPageLimitReached);
   return (
     <div className="sidebar">
       <div className="sidebar__top">
         <ResultsCount resultCount={resultCount} />
-        <SortingControls />
+        <SortingControls setSortBy={setSortBy} sortBy={sortBy} />
       </div>
       <JobList jobItemsSliced={jobItemsSliced} isLoading={isLoading} />
       <PaginationControls
