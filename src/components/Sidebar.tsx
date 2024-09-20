@@ -1,4 +1,4 @@
-import { TJobItem } from "../libs/types";
+import { TJobItem, TPageDirections, TSortBy } from "../libs/types";
 import JobList from "./JobList";
 import PaginationControls from "./PaginationControls";
 import ResultsCount from "./ResultsCount";
@@ -8,9 +8,9 @@ type TSidebar = {
   resultCount: number;
   jobItemsSliced: TJobItem[];
   isLoading: boolean;
-  handleChangePage: (text: string) => void;
+  handleChangePage: (direction: TPageDirections) => void;
   currPage: number;
-  setSortBy: (text: string) => void;
+  setSortBy: (text: TSortBy) => void;
   sortBy: string;
 };
 

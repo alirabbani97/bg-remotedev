@@ -1,5 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import { MouseEventHandler } from "react";
+import { TPageDirections } from "../libs/types";
 
 export default function PaginationControls({
   isNextPageLimitReached,
@@ -7,7 +8,7 @@ export default function PaginationControls({
   currPage,
 }: {
   isNextPageLimitReached: number;
-  handleChangePage: (direction: string) => void;
+   handleChangePage: (direction: TPageDirections) => void;
   currPage: number;
 }) {
   return (

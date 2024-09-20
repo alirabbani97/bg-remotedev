@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TJobItem, TJobItemContent } from "./types";
+import { TJobItem, TJobItemContent, TPageDirections, TSortBy } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_API_URL, RESULTS_PER_PAGE } from "./constants";
 import { handleError } from "./utils";
@@ -114,7 +114,7 @@ export const useActiveId = () => {
 export const usePagination = () => {
   const [currPage, setCurrPage] = useState(1);
 
-  const handleChangePage = (direction: string) => {
+  const handleChangePage = (direction: TPageDirections) => {
     if (direction === "back") {
       setCurrPage((prev) => (prev > 1 ? prev - 1 : 0));
     }
@@ -126,5 +126,5 @@ export const usePagination = () => {
   const sliceEnd = RESULTS_PER_PAGE * currPage || RESULTS_PER_PAGE;
   const sliceStart = currPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE || 0;
 
-  return { sliceStart, sliceEnd, handleChangePage, currPage };
+  return { sliceStart, sliceEnd, handleChangePage, currPage, setCurrPage };
 };

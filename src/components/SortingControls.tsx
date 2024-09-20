@@ -1,5 +1,7 @@
+import { TSortBy } from "../libs/types";
+
 type TSortingControls = {
-  setSortBy: (text: string) => void;
+  setSortBy: (text: TSortBy) => void;
   sortBy: string;
 };
 
