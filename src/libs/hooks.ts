@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TJobItem, TJobItemContent, TPageDirections, TSortBy } from "./types";
+import { TJobItem, TJobItemContent, TPageDirections } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_API_URL, RESULTS_PER_PAGE } from "./constants";
 import { handleError } from "./utils";
