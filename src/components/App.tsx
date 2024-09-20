@@ -6,37 +6,36 @@ import BookmarksButton from "./BookmarksButton";
 import Logo from "./Logo";
 import SearchForm from "./SearchForm";
 import { useDebounce, useJobList, usePagination } from "../libs/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import JobItemContent from "./JobItemContent";
 import { Toaster } from "react-hot-toast";
-import { TJobItem } from "../libs/types";
 
 function App() {
+  //STATES
   const [searchText, setSearchText] = useState("");
   const [sortBy, setSortBy] = useState("relevant");
 
+  // HOOKS
   const debouncedValue = useDebounce(searchText, 250);
-  // FETCHING SEARCH
   const { jobItems, isLoading } = useJobList(debouncedValue);
-
   const { sliceStart, sliceEnd, handleChangePage, currPage } = usePagination();
 
+  // DERIVED STATES
   const jobItemsSliced = jobItems?.slice(sliceStart, sliceEnd) || [];
-
-  const jobsSorted = () => {
-    if (sortBy === "relevant") {
-      return jobItems?.toSorted((a,b)=> b.relevanceScore - a.relevanceScore)
-   
-    }
-    if (sortBy === "newest") {
-      return  jobItems?.toSorted((a,b)=> a.daysAgo - b.daysAgo)
-
-    }
-  };
-
   const resultCount = jobItems?.length || 0;
 
+  // HANDLE FUNCTIONS
+  const handleSorting = (sortBy: string) => {
+    setSortBy(sortBy);
+
+    if (sortBy === "relevant") {
+      return jobItems?.sort((a, b) => b.relevanceScore - a.relevanceScore);
+    }
+    if (sortBy === "newest") {
+      return jobItems?.sort((a, b) => a.daysAgo - b.daysAgo);
+    }
+  };
   return (
     <>
       <Background />
@@ -57,7 +56,7 @@ function App() {
           isLoading={isLoading}
           handleChangePage={handleChangePage}
           currPage={currPage}
-          setSortBy={setSortBy}
+          setSortBy={handleSorting}
           sortBy={sortBy}
         />
         <JobItemContent />

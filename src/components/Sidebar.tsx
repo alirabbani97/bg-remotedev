@@ -10,7 +10,7 @@ type TSidebar = {
   isLoading: boolean;
   handleChangePage: (text: string) => void;
   currPage: number;
-  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  setSortBy: (text: string) => void;
   sortBy: string;
 };
 

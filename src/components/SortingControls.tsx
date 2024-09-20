@@ -1,5 +1,5 @@
 type TSortingControls = {
-  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  setSortBy: (text: string) => void;
   sortBy: string;
 };
 
@@ -14,16 +14,16 @@ export default function SortingControls({
       <button
         onClick={() => setSortBy("relevant")}
         className={`sorting__button sorting__button--relevant ${
-          sortBy === "relevant" ? " sorting__button--active" : ""
+          sortBy === "relevant" ? " sorting__button--active " : " "
         }`}
       >
         Relevant
       </button>
 
       <button
-        onClick={() => setSortBy("relevant")}
+        onClick={() => setSortBy("newest")}
         className={`sorting__button sorting__button--recent ${
-          sortBy === "recent" ? " sorting__button--active" : ""
+          sortBy === "newest" ? " sorting__button--active " : " "
         }`}
       >
         Recent
