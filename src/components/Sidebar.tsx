@@ -12,6 +12,8 @@ type TSidebar = {
   currPage: number;
   setSortBy: (text: TSortBy) => void;
   sortBy: string;
+  bookmarkIds: number[];
+  handleBookmarkToggle: (id: number) => void;
 };
 
 export default function Sidebar({
@@ -22,6 +24,8 @@ export default function Sidebar({
   currPage,
   setSortBy,
   sortBy,
+  handleBookmarkToggle,
+  bookmarkIds,
 }: TSidebar) {
   const isNextPageLimitReached = resultCount / 7;
 
@@ -32,7 +36,12 @@ export default function Sidebar({
         <ResultsCount resultCount={resultCount} />
         <SortingControls setSortBy={setSortBy} sortBy={sortBy} />
       </div>
-      <JobList jobItemsSliced={jobItemsSliced} isLoading={isLoading} />
+      <JobList
+        jobItemsSliced={jobItemsSliced}
+        isLoading={isLoading}
+        bookmarkIds={bookmarkIds}
+        handleBookmarkToggle={handleBookmarkToggle}
+      />
       <PaginationControls
         currPage={currPage}
         isNextPageLimitReached={isNextPageLimitReached}

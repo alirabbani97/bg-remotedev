@@ -16,6 +16,7 @@ function App() {
   //STATES
   const [searchText, setSearchText] = useState("");
   const [sortBy, setSortBy] = useState<TSortBy>("relevant");
+  const [bookmarkIds, setBookmarkIds] = useState<number[]>([]);
 
   // HOOKS
   const debouncedValue = useDebounce(searchText, 250);
@@ -39,6 +40,15 @@ function App() {
       return jobItems?.sort((a, b) => a.daysAgo - b.daysAgo);
     }
   };
+
+  const handleBookmarkToggle = (id: number) => {
+    if (bookmarkIds.includes(id)) {
+      setBookmarkIds((prev) => [...prev].filter((prevId) => prevId !== id));
+    } else {
+      setBookmarkIds((prev) => [...prev, id]);
+    }
+  };
+
   return (
     <>
       <Background />
@@ -61,8 +71,13 @@ function App() {
           currPage={currPage}
           setSortBy={handleSorting}
           sortBy={sortBy}
+          bookmarkIds={bookmarkIds}
+          handleBookmarkToggle={handleBookmarkToggle}
         />
-        <JobItemContent />
+        <JobItemContent
+          handleBookmarkToggle={handleBookmarkToggle}
+          bookmarkIds={bookmarkIds}
+        />
       </Container>
 
       <Footer />

@@ -18,6 +18,11 @@ export type TJobItemContent = TJobItem & {
   companyURL: string;
 };
 
+export type TBookmarkIcon = {
+  isBookmarked: boolean;
+  id: number;
+  onBookmarkToggle: (id: number) => void;
+};
 export type TPageDirections = "back" | "next";
 
 export type TSortBy = "relevant" | "newest";

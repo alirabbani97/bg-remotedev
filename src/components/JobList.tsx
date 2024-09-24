@@ -2,8 +2,18 @@ import { TJobItem } from "../libs/types";
 import JobListItem from "./JobListItem";
 import Spinner from "./Spinner";
 
-type TJobList = { jobItemsSliced: TJobItem[]; isLoading: boolean };
-export function JobList({ jobItemsSliced, isLoading }: TJobList) {
+type TJobList = {
+  jobItemsSliced: TJobItem[];
+  isLoading: boolean;
+  bookmarkIds: number[];
+  handleBookmarkToggle: (id: number) => void;
+};
+export function JobList({
+  jobItemsSliced,
+  isLoading,
+  bookmarkIds,
+  handleBookmarkToggle,
+}: TJobList) {
   return (
     <ul className="job-list">
       {isLoading ? (
@@ -11,7 +21,12 @@ export function JobList({ jobItemsSliced, isLoading }: TJobList) {
       ) : (
         <>
           {jobItemsSliced.map((item) => (
-            <JobListItem key={item.id} JobItem={item} />
+            <JobListItem
+              key={item.id}
+              JobItem={item}
+              isBookmarked={bookmarkIds.includes(item.id)}
+              handleBookmarkToggle={handleBookmarkToggle}
+            />
           ))}
         </>
       )}
