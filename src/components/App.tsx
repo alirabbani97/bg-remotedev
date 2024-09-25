@@ -16,7 +16,6 @@ function App() {
   //STATES
   const [searchText, setSearchText] = useState("");
   const [sortBy, setSortBy] = useState<TSortBy>("relevant");
-  const [bookmarkIds, setBookmarkIds] = useState<number[]>([]);
 
   // HOOKS
   const debouncedValue = useDebounce(searchText, 250);
@@ -38,14 +37,6 @@ function App() {
     }
     if (sortBy === "newest") {
       return jobItems?.sort((a, b) => a.daysAgo - b.daysAgo);
-    }
-  };
-
-  const handleBookmarkToggle = (id: number) => {
-    if (bookmarkIds.includes(id)) {
-      setBookmarkIds((prev) => [...prev].filter((prevId) => prevId !== id));
-    } else {
-      setBookmarkIds((prev) => [...prev, id]);
     }
   };
 
@@ -71,13 +62,8 @@ function App() {
           currPage={currPage}
           setSortBy={handleSorting}
           sortBy={sortBy}
-          bookmarkIds={bookmarkIds}
-          handleBookmarkToggle={handleBookmarkToggle}
         />
-        <JobItemContent
-          handleBookmarkToggle={handleBookmarkToggle}
-          bookmarkIds={bookmarkIds}
-        />
+        <JobItemContent />
       </Container>
 
       <Footer />

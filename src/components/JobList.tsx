@@ -5,15 +5,8 @@ import Spinner from "./Spinner";
 type TJobList = {
   jobItemsSliced: TJobItem[];
   isLoading: boolean;
-  bookmarkIds: number[];
-  handleBookmarkToggle: (id: number) => void;
 };
-export function JobList({
-  jobItemsSliced,
-  isLoading,
-  bookmarkIds,
-  handleBookmarkToggle,
-}: TJobList) {
+export function JobList({ jobItemsSliced, isLoading }: TJobList) {
   return (
     <ul className="job-list">
       {isLoading ? (
@@ -21,12 +14,7 @@ export function JobList({
       ) : (
         <>
           {jobItemsSliced.map((item) => (
-            <JobListItem
-              key={item.id}
-              JobItem={item}
-              isBookmarked={bookmarkIds.includes(item.id)}
-              handleBookmarkToggle={handleBookmarkToggle}
-            />
+            <JobListItem key={item.id} JobItem={item} />
           ))}
         </>
       )}

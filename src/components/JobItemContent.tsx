@@ -2,13 +2,7 @@ import { useJobItemContent } from "../libs/hooks";
 import BookmarkIcon from "./BookmarkIcon";
 import IsLoadingContent from "./IsLoadingContent";
 
-export default function JobItemContent({
-  handleBookmarkToggle,
-  bookmarkIds,
-}: {
-  bookmarkIds: number[];
-  handleBookmarkToggle: (id: number) => void;
-}) {
+export default function JobItemContent() {
   const { isLoading, jobItemContent } = useJobItemContent();
 
   if (isLoading) {
@@ -46,11 +40,7 @@ export default function JobItemContent({
                   {jobItemContent?.daysAgo}d ago
                 </time>
 
-                <BookmarkIcon
-                  onBookmarkToggle={handleBookmarkToggle}
-                  id={jobItemContent.id}
-                  isBookmarked={bookmarkIds.includes(jobItemContent.id)}
-                />
+                <BookmarkIcon id={jobItemContent.id} />
               </div>
             </div>
 

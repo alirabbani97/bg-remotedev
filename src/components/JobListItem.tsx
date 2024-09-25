@@ -2,15 +2,7 @@ import { useActiveId } from "../libs/hooks";
 import { TJobItem } from "../libs/types";
 import BookmarkIcon from "./BookmarkIcon";
 
-export default function JobListItem({
-  JobItem,
-  handleBookmarkToggle,
-  isBookmarked,
-}: {
-  JobItem: TJobItem;
-  isBookmarked: boolean;
-  handleBookmarkToggle: (id: number) => void;
-}) {
+export default function JobListItem({ JobItem }: { JobItem: TJobItem }) {
   const activeId = useActiveId();
 
   return (
@@ -28,11 +20,7 @@ export default function JobListItem({
         </div>
 
         <div className="job-item__right">
-          <BookmarkIcon
-            isBookmarked={isBookmarked}
-            id={JobItem.id}
-            onBookmarkToggle={handleBookmarkToggle}
-          />
+          <BookmarkIcon id={JobItem.id} />
           <time className="job-item__time">{JobItem.daysAgo}d</time>
         </div>
       </a>
