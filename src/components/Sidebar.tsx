@@ -12,7 +12,6 @@ type TSidebar = {
   currPage: number;
   setSortBy: (text: TSortBy) => void;
   sortBy: string;
-
 };
 
 export default function Sidebar({
@@ -23,7 +22,6 @@ export default function Sidebar({
   currPage,
   setSortBy,
   sortBy,
-
 }: TSidebar) {
   const isNextPageLimitReached = resultCount / 7;
 
@@ -34,11 +32,7 @@ export default function Sidebar({
         <ResultsCount resultCount={resultCount} />
         <SortingControls setSortBy={setSortBy} sortBy={sortBy} />
       </div>
-      <JobList
-        jobItemsSliced={jobItemsSliced}
-        isLoading={isLoading}
-     
-      />
+      <JobList jobItems={jobItemsSliced} isLoading={isLoading} />
       <PaginationControls
         currPage={currPage}
         isNextPageLimitReached={isNextPageLimitReached}

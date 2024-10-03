@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { TJobItem, TJobItemContent, TPageDirections } from "./types";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { BASE_API_URL, RESULTS_PER_PAGE } from "./constants";
 import { handleError } from "./utils";
+import { BookmarksContext } from "../contexts/BookmarksContextProvider";
 
 type APIresponseJobItem = {
   public: boolean;
@@ -45,6 +46,26 @@ export const useJobItemContent = () => {
   const jobItemContent = data?.jobItem;
   const isLoading = isInitialLoading;
   return { jobItemContent, isLoading };
+};
+
+export const useJobItems = (ids: number[]) => {
+  const results = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ["job-item", id],
+      queryFn: () => fetchJobItemContent(id),
+      staleTime: 1000 * 60 * 60,
+      enabled: !!id,
+      refetchOnWindowFocus: false,
+      retry: false,
+      onError: handleError,
+    })),
+  });
+
+  const jobItems = results
+    .map((result) => result.data?.jobItem)
+    .filter((jobItem) => jobItem !== undefined);
+  const isLoading = results.some((result) => result.isLoading);
+  return { jobItems, isLoading };
 };
 
 const fetchJobList = async (
@@ -127,4 +148,31 @@ export const usePagination = () => {
   const sliceStart = currPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE || 0;
 
   return { sliceStart, sliceEnd, handleChangePage, currPage, setCurrPage };
+};
+
+export const useLocalStorageHook = <T>(
+  key: string,
+  initialValue: T
+): [T, React.Dispatch<React.SetStateAction<T>>] => {
+  const [value, setValue] = useState(() =>
+    JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue))
+  );
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue] as const;
+};
+
+export const useBookmarksContext = () => {
+  const context = useContext(BookmarksContext);
+
+  if (!context) {
+    throw new Error(
+      "BookmarksContext should be used inside a BookmarksCOntext.PRovider wrapper."
+    );
+  }
+
+  return context;
 };
