@@ -3,7 +3,7 @@ import JobListItem from "./JobListItem";
 import Spinner from "./Spinner";
 
 type TJobList = {
-  jobItems: TJobItem[];
+  jobItems: TJobItem[] | undefined;
   isLoading: boolean;
 };
 export function JobList({ jobItems, isLoading }: TJobList) {
@@ -13,7 +13,7 @@ export function JobList({ jobItems, isLoading }: TJobList) {
         <Spinner />
       ) : (
         <>
-          {jobItems.map((item) => (
+          {jobItems?.map((item) => (
             <JobListItem key={item.id} JobItem={item} />
           ))}
         </>

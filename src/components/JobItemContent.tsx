@@ -1,9 +1,9 @@
-import { useJobItemContent } from "../libs/hooks";
+import { useJobItem } from "../libs/hooks";
 import BookmarkIcon from "./BookmarkIcon";
 import IsLoadingContent from "./IsLoadingContent";
 
 export default function JobItemContent() {
-  const { isLoading, jobItemContent } = useJobItemContent();
+  const { isLoading, jobItemContent } = useJobItem();
 
   if (isLoading) {
     return <IsLoadingContent />;

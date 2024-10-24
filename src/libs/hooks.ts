@@ -1,9 +1,12 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { TJobItem, TJobItemContent, TPageDirections } from "./types";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { BASE_API_URL, RESULTS_PER_PAGE } from "./constants";
 import { handleError } from "./utils";
 import { BookmarksContext } from "../contexts/BookmarksContextProvider";
+import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
+import { SearchContext } from "../contexts/SearchContextProvider";
+import { JobItemsContext } from "../contexts/JobItemsContextProvider";
 
 type APIresponseJobItem = {
   public: boolean;
@@ -30,7 +33,7 @@ const fetchJobItemContent = async (
   return data;
 };
 
-export const useJobItemContent = () => {
+export const useJobItem = () => {
   const activeId = useActiveId();
   const { data, isInitialLoading } = useQuery(
     ["job-item", activeId],
@@ -63,7 +66,7 @@ export const useJobItems = (ids: number[]) => {
 
   const jobItems = results
     .map((result) => result.data?.jobItem)
-    .filter((jobItem) => jobItem !== undefined);
+    .filter((jobItem) => !!jobItem) as TJobItemContent[];
   const isLoading = results.some((result) => result.isLoading);
   return { jobItems, isLoading };
 };
@@ -154,7 +157,7 @@ export const useLocalStorageHook = <T>(
   key: string,
   initialValue: T
 ): [T, React.Dispatch<React.SetStateAction<T>>] => {
-  const [value, setValue] = useState(() =>
+  const [value, setValue] = useState<T>(() =>
     JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue))
   );
 
@@ -162,15 +165,68 @@ export const useLocalStorageHook = <T>(
     localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
-  return [value, setValue] as const;
+  return [value, setValue];
 };
+
+export function useOnClickOutside(
+  refs: React.RefObject<HTMLElement>[],
+  clickEvent: () => void
+) {
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (refs.every((ref) => !ref.current?.contains(e.target as Node))) {
+        clickEvent();
+      }
+    };
+
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, [clickEvent, refs]);
+
+  return {};
+}
 
 export const useBookmarksContext = () => {
   const context = useContext(BookmarksContext);
 
   if (!context) {
     throw new Error(
-      "BookmarksContext should be used inside a BookmarksCOntext.PRovider wrapper."
+      "BookmarksContext should be used inside a BookmarksContext.Provider wrapper."
+    );
+  }
+
+  return context;
+};
+
+export const useActiveIdContext = () => {
+  const context = useContext(ActiveIdContext);
+
+  if (!context) {
+    throw new Error(
+      "ActiveIdContext should be used inside a ActiveIdContext.Provider wrapper."
+    );
+  }
+
+  return context;
+};
+
+export const useSearchContext = () => {
+  const context = useContext(SearchContext);
+
+  if (!context) {
+    throw new Error(
+      "SearchContext should be used inside a SearchContext.Provider wrapper."
+    );
+  }
+
+  return context;
+};
+export const useJobItemsContext = () => {
+  const context = useContext(JobItemsContext);
+
+  if (!context) {
+    throw new Error(
+      "JobItemsContext should be used inside a JobItemsContext.Provider wrapper."
     );
   }
 

@@ -1,3 +1,7 @@
-export default function ResultsCount({resultCount}: {resultCount:number}) {
+import { useJobItemsContext } from "../libs/hooks";
+
+export default function ResultsCount() {
+  const { resultCount } = useJobItemsContext();
+
   return <p className="count">{resultCount} results</p>;
 }

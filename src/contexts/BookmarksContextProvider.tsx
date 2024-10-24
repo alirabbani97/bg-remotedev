@@ -1,11 +1,11 @@
 import { createContext, ReactNode } from "react";
 import { useJobItems, useLocalStorageHook } from "../libs/hooks";
-import { TJobItem } from "../libs/types";
+import { TJobItemContent } from "../libs/types";
 
 type TBookmarkContext = {
   bookmarkIds: number[];
   handleBookmarkToggle: (id: number) => void;
-  jobItems: TJobItem[];
+  jobItems: TJobItemContent[];
   isLoading: boolean;
 };
 
@@ -18,7 +18,7 @@ export default function BookmarksContextProvider({
 }) {
   const [bookmarkIds, setBookmarkIds] = useLocalStorageHook<number[]>(
     "bookmarkIds",
-   []
+    []
   );
 
   const { jobItems, isLoading } = useJobItems(bookmarkIds);

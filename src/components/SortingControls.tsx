@@ -1,20 +1,13 @@
-import { TSortBy } from "../libs/types";
+import { useJobItemsContext } from "../libs/hooks";
 
-type TSortingControls = {
-  setSortBy: (text: TSortBy) => void;
-  sortBy: string;
-};
-
-export default function SortingControls({
-  setSortBy,
-  sortBy,
-}: TSortingControls) {
+export default function SortingControls() {
+  const { sortBy, handleSorting } = useJobItemsContext();
   return (
     <section className="sorting">
       <i className="fa-solid fa-arrow-down-short-wide"></i>
 
       <button
-        onClick={() => setSortBy("relevant")}
+        onClick={() => handleSorting("relevant")}
         className={`sorting__button sorting__button--relevant ${
           sortBy === "relevant" ? " sorting__button--active " : " "
         }`}
@@ -23,7 +16,7 @@ export default function SortingControls({
       </button>
 
       <button
-        onClick={() => setSortBy("newest")}
+        onClick={() => handleSorting("newest")}
         className={`sorting__button sorting__button--recent ${
           sortBy === "newest" ? " sorting__button--active " : " "
         }`}

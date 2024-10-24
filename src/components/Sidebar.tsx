@@ -1,43 +1,19 @@
-import { TJobItem, TPageDirections, TSortBy } from "../libs/types";
 import JobList from "./JobList";
 import PaginationControls from "./PaginationControls";
 import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
+import { useJobItemsContext } from "../libs/hooks";
 
-type TSidebar = {
-  resultCount: number;
-  jobItemsSliced: TJobItem[];
-  isLoading: boolean;
-  handleChangePage: (direction: TPageDirections) => void;
-  currPage: number;
-  setSortBy: (text: TSortBy) => void;
-  sortBy: string;
-};
-
-export default function Sidebar({
-  resultCount,
-  jobItemsSliced,
-  isLoading,
-  handleChangePage,
-  currPage,
-  setSortBy,
-  sortBy,
-}: TSidebar) {
-  const isNextPageLimitReached = resultCount / 7;
-
-  console.log(isNextPageLimitReached);
+export default function Sidebar() {
+  const { isLoading, jobItemsSortedandSliced } = useJobItemsContext();
   return (
     <div className="sidebar">
       <div className="sidebar__top">
-        <ResultsCount resultCount={resultCount} />
-        <SortingControls setSortBy={setSortBy} sortBy={sortBy} />
+        <ResultsCount />
+        <SortingControls />
       </div>
-      <JobList jobItems={jobItemsSliced} isLoading={isLoading} />
-      <PaginationControls
-        currPage={currPage}
-        isNextPageLimitReached={isNextPageLimitReached}
-        handleChangePage={handleChangePage}
-      />
+      <JobList isLoading={isLoading} jobItems={jobItemsSortedandSliced} />
+      <PaginationControls />
     </div>
   );
 }

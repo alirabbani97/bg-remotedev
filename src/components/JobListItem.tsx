@@ -1,9 +1,9 @@
-import { useActiveId } from "../libs/hooks";
+import { useActiveIdContext } from "../libs/hooks";
 import { TJobItem } from "../libs/types";
 import BookmarkIcon from "./BookmarkIcon";
 
 export default function JobListItem({ JobItem }: { JobItem: TJobItem }) {
-  const activeId = useActiveId();
+  const { activeId } = useActiveIdContext();
 
   return (
     <li

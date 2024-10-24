@@ -1,16 +1,12 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import { MouseEventHandler } from "react";
-import { TPageDirections } from "../libs/types";
+import { useJobItemsContext } from "../libs/hooks";
 
-export default function PaginationControls({
-  isNextPageLimitReached,
-  handleChangePage,
-  currPage,
-}: {
-  isNextPageLimitReached: number;
-   handleChangePage: (direction: TPageDirections) => void;
-  currPage: number;
-}) {
+export default function PaginationControls() {
+  const { currPage, handleChangePage, resultCount } = useJobItemsContext();
+
+  const isNextPageLimitReached = resultCount / 7;
+
   return (
     <section className="pagination">
       {currPage > 1 && (

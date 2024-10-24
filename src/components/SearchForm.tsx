@@ -1,10 +1,7 @@
-export default function SearchForm({
-  searchText,
-  setSearchText,
-}: {
-  searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
-}) {
+import { useSearchContext } from "../libs/hooks";
+
+export default function SearchForm() {
+  const {searchText,setSearchText}=useSearchContext()
   return (
     <form
       onSubmit={(e) => {
